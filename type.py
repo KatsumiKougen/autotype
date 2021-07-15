@@ -71,7 +71,7 @@ class tool:
         sleep(10)
         defaultSpeed = 0.0471
         for item in self.keylist:
-            if item[-1] == "press":
+            if item[-1] == "type":
                 for char in item[0]:
                     self.typeKey(char, delay=defaultSpeed)
             elif item[-1] == "hold":
