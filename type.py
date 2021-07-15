@@ -52,6 +52,8 @@ class tool:
                 print(f"{filename} loaded!")
         except FileNotFoundError:
             print(f"Error: No such file as {filename}")
+        except json.decoder.JSONDecodeError:
+            print(f"Error: Syntax error in {filename}")
 
     def typeKey(self, keyName: keyboard.Key, delay: int):
         self.kb.press(keyName)
@@ -69,7 +71,7 @@ class tool:
 
     def start(self):
         sleep(10)
-        defaultSpeed = 0.0471
+        defaultSpeed = 0.0384
         for item in self.keylist:
             if item[-1] == "type":
                 for char in item[0]:
