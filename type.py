@@ -1,7 +1,16 @@
 from pynput import mouse, keyboard
 from pynput.keyboard import Key
 from time import sleep
-import json, sys
+import json, sys, time
+
+with open("debug.log", "a") as f:
+    f.write(time.asctime()+"\n")
+
+debug = True
+def debugPrint(string: str, allowed: bool = debug):
+    if allowed:
+        with open("debug.log", "a") as f:
+            f.write(string+"\n")
 
 class tool:
 
@@ -44,8 +53,13 @@ class tool:
 
     def loadKeyList(self, filename: str):
         try:
+            debugPrint(
+                f"Now loading \"{filename}\"...\n"
+                f"  File name: {filename.split('.')[0]}\n"
+                f"  Format: {filename.split('.')[1]}"
+            )
             if filename.split(".")[-1] != "json":
-                print(f"Error: Got .{filename.split('.')[1]} file, expected .json file")
+                print(f"Error: Got .{filename.split('.')[-1]} file, expected .json file")
             else:
                 with open(filename, "r") as f:
                     self.keylist = json.load(f)
@@ -59,20 +73,24 @@ class tool:
         self.kb.press(keyName)
         self.kb.release(keyName)
         sleep(delay)
+        debugPrint(f"Key \"{keyName}\" pressed, {delay:.2f} seconds interval")
 
     def holdKey(self, *keyName: keyboard.Key, delay: int):
         for key in keyName:
             self.kb.press(key)
+            debugPrint(f"Key {key} held")
         for key in keyName:
             self.kb.release(key)
+            debugPrint(f"Key {key} released")
 
     def convert(self, keyString: str) -> list:
         return [self.special[key] if key in self.special else key for key in keyString.split(".")]
 
     def start(self):
-        sleep(10)
+        sleep(5)
         defaultSpeed = 0.0384
-        for item in self.keylist:
+        debugPrint(f"Interval: {defaultSpeed} seconds\nReady to type in 5 seconds...")
+        for idx, item in enumerate(self.keylist):
             if item[-1] == "type":
                 for char in item[0]:
                     self.typeKey(char, delay=defaultSpeed)
@@ -80,6 +98,7 @@ class tool:
                 self.holdKey(*(self.convert(item[0])), delay=defaultSpeed)
             elif item[-1] == "special":
                 self.typeKey(self.special[item[0]], delay=defaultSpeed)
+            debugPrint(f"Item {idx}\tContent: {item[0]}\nMode: {item[-1]}")
 
 tool = tool()
 tool.loadKeyList(sys.argv[1])
