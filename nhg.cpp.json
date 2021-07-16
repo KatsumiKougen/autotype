@@ -1,0 +1,15 @@
+[
+    ["i", "type"],
+    ["#include <iostream>", "type"],
+    ["enter", "special"],
+    ["enter", "special"],
+    ["int main(){", "type"],
+    ["enter", "hold"],
+    ["}", "type"],
+    ["left", "special"],
+    ["up", "special"],
+    ["esc", "special"],
+    ["o", "type"],
+    ["tab", "special"],
+    ["std::cout << \"Natural Harmonia Gropius\" << std::endl; return 0;", "type"]
+]
