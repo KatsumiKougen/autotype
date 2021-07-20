@@ -87,8 +87,8 @@ class tool:
         return [self.special[key] if key in self.special else key for key in keyString.split(".")]
 
     def start(self):
-        sleep(5)
-        defaultSpeed = 0.0384
+        sleep(8)
+        defaultSpeed = 0.0321
         debugPrint(f"Interval: {defaultSpeed} seconds\nReady to type in 5 seconds...")
         for idx, item in enumerate(self.keylist):
             if item[-1] == "type":
@@ -98,6 +98,8 @@ class tool:
                 self.holdKey(*(self.convert(item[0])), delay=defaultSpeed)
             elif item[-1] == "special":
                 self.typeKey(self.special[item[0]], delay=defaultSpeed)
+            elif item[-1] == "stop":
+                sleep(item[0])
             debugPrint(f"Item {idx}\tContent: {item[0]}\nMode: {item[-1]}")
 
 tool = tool()
